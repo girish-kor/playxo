@@ -51,3 +51,21 @@ export { default as RawShaderMaterial } from "./materials/RawShaderMaterial";
 export { default as ShaderMaterial } from "./materials/ShaderMaterial";
 export { default as ShadowMaterial } from "./materials/ShadowMaterial";
 export { default as SpriteMaterial } from "./materials/SpriteMaterial";
+
+// Loaders
+export { default as AudioLoader } from "./loaders/AudioLoader";
+export { default as BVHLoader } from "./loaders/BVHLoader";
+export { default as CubeTextureLoader } from "./loaders/CubeTextureLoader";
+export { default as DRACOLoader } from "./loaders/DRACOLoader";
+export { default as FBXLoader } from "./loaders/FBXLoader";
+export { default as FontLoader } from "./loaders/FontLoader";
+export { default as GLTFLoader } from "./loaders/GLTFLoader";
+export { default as HDRCubeTextureLoader } from "./loaders/HDRCubeTextureLoader";
+export { default as ImageBitmapLoader } from "./loaders/ImageBitmapLoader";
+export { default as KTX2Loader } from "./loaders/KTX2Loader";
+export { default as LottieLoader } from "./loaders/LottieLoader";
+export { default as MMDLoader } from "./loaders/MMDLoader";
+export { default as OBJLoader } from "./loaders/OBJLoader";
+export { default as TextureLoader } from "./loaders/TextureLoader";
+export { default as TGALoader } from "./loaders/TGALoader";
+export { default as VideoTextureLoader } from "./loaders/VideoTextureLoader";
