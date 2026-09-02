@@ -69,3 +69,17 @@ export { default as OBJLoader } from "./loaders/OBJLoader";
 export { default as TextureLoader } from "./loaders/TextureLoader";
 export { default as TGALoader } from "./loaders/TGALoader";
 export { default as VideoTextureLoader } from "./loaders/VideoTextureLoader";
+
+// Animations
+export { default as AnimationAction } from "./animations/AnimationAction";
+export { default as AnimationBlender } from "./animations/AnimationBlender";
+export { default as AnimationClip } from "./animations/AnimationClip";
+export { default as AnimationMixer } from "./animations/AnimationMixer";
+export { default as AnimationStateMachine } from "./animations/AnimationStateMachine";
+export { default as AnimationTransition } from "./animations/AnimationTransition";
+export { default as BooleanKeyframeTrack } from "./animations/BooleanKeyframeTrack";
+export { default as KeyframeTrack } from "./animations/KeyframeTrack";
+export { default as NumberKeyframeTrack } from "./animations/NumberKeyframeTrack";
+export { default as QuaternionKeyframeTrack } from "./animations/QuaternionKeyframeTrack";
+export { default as StringKeyframeTrack } from "./animations/StringKeyframeTrack";
+export { default as VectorKeyframeTrack } from "./animations/VectorKeyframeTrack";
