@@ -1,4 +1,4 @@
-// play-kit/src/geometries/ExtrudeGeometry.tsx
+// playxo/src/geometries/ExtrudeGeometry.tsx
 
 import React, {
   forwardRef,

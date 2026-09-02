@@ -1,4 +1,4 @@
-// play-kit/src/geometries/ConeGeometry.tsx
+// playxo/src/geometries/ConeGeometry.tsx
 
 import React, {
   forwardRef,

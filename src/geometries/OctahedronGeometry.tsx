@@ -1,4 +1,4 @@
-// play-kit/src/geometries/OctahedronGeometry.tsx
+// playxo/src/geometries/OctahedronGeometry.tsx
 
 import React, {
   forwardRef,

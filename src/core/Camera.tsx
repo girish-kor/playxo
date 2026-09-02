@@ -1,4 +1,4 @@
-// play-kit/src/core/Camera.tsx
+// playxo/src/core/Camera.tsx
 
 import React, {
   forwardRef,

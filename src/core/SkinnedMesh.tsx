@@ -1,4 +1,4 @@
-// play-kit/src/core/SkinnedMesh.tsx
+// playxo/src/core/SkinnedMesh.tsx
 
 import React, {
   forwardRef,

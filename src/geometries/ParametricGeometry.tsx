@@ -1,4 +1,4 @@
-// play-kit/src/geometries/ParametricGeometry.tsx
+// playxo/src/geometries/ParametricGeometry.tsx
 
 import React, {
   forwardRef,

@@ -1,4 +1,4 @@
-// play-kit/src/core/InstancedMesh.tsx
+// playxo/src/core/InstancedMesh.tsx
 
 import React, {
   forwardRef,

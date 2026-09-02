@@ -1,4 +1,4 @@
-// play-kit/src/core/Bone.tsx
+// playxo/src/core/Bone.tsx
 
 import React, {
   forwardRef,

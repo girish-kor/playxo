@@ -1,5 +1,5 @@
 {
-  "name": "play-kit",
+  "name": "playxo",
   "version": "1.0.0",
   "description": "A comprehensive, production-ready 3D development library that transforms complex 3D graphics programming into intuitive, composable React components.",
   "keywords": [
@@ -10,9 +10,9 @@
     "graphics",
     "components"
   ],
-  "homepage": "https://github.com/girish-kor/play-kit#readme",
+  "homepage": "https://github.com/girish-kor/playxo#readme",
   "bugs": {
-    "url": "https://github.com/girish-kor/play-kit/issues"
+    "url": "https://github.com/girish-kor/playxo/issues"
   },
   "license": "MIT",
   "author": "Girish Kor <your.email@example.com>",
@@ -76,6 +76,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/girish-kor/play-kit.git"
+    "url": "git+https://github.com/girish-kor/playxo.git"
   }
 }

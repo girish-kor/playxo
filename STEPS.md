@@ -1,6 +1,6 @@
 # Component Creation Steps
 
-This document defines the **single, common pseudocode workflow** to follow for every component `.tsx` file in `play-kit`.
+This document defines the **single, common pseudocode workflow** to follow for every component `.tsx` file in `playxo`.
 The same steps apply to all components – from core primitives to loaders, effects, and UI elements.
 
 ---

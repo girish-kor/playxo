@@ -1,4 +1,4 @@
-// play-kit/src/geometries/BoxGeometry.tsx
+// playxo/src/geometries/BoxGeometry.tsx
 
 import React, {
   forwardRef,

@@ -1,4 +1,4 @@
-// play-kit/src/geometries/DodecahedronGeometry.tsx
+// playxo/src/geometries/DodecahedronGeometry.tsx
 
 import React, {
   forwardRef,

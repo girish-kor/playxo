@@ -1,7 +1,7 @@
-# 🎮 Play-Kit
+# 🎮 playxo
 
 A comprehensive, production-ready 3D development library that transforms complex 3D graphics programming into intuitive, composable React components.
-Built on top of **React**, **Three.js**, and **@react-three/fiber**, Play-Kit provides a declarative API for building games, visualizations, and interactive 3D experiences with ease.
+Built on top of **React**, **Three.js**, and **@react-three/fiber**, playxo provides a declarative API for building games, visualizations, and interactive 3D experiences with ease.
 
 ---
 
@@ -18,9 +18,9 @@ Built on top of **React**, **Three.js**, and **@react-three/fiber**, Play-Kit pr
 ## 📦 Installation
 
 ```bash
-npm install play-kit three @react-three/fiber react
+npm install playxo three @react-three/fiber react
 # or
-yarn add play-kit three @react-three/fiber react
+yarn add playxo three @react-three/fiber react
 ```
 
 > **Note:** `three`, `@react-three/fiber`, and `react` are peer dependencies and must be installed separately.
@@ -38,7 +38,7 @@ import {
   BoxGeometry,
   MeshStandardMaterial,
   OrbitControls,
-} from "play-kit";
+} from "playxo";
 
 function App() {
   return (
@@ -65,7 +65,7 @@ function App() {
 
 ## 📖 Documentation
 
-Full documentation, API reference, and examples are available at [play-kit.dev](https://play-kit.dev) (coming soon).
+Full documentation, API reference, and examples are available at [playxo.dev](https://playxo.dev) (coming soon).
 
 ---
 

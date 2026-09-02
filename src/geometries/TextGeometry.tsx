@@ -1,4 +1,4 @@
-// play-kit/src/geometries/TextGeometry.tsx
+// playxo/src/geometries/TextGeometry.tsx
 
 import React, {
   forwardRef,

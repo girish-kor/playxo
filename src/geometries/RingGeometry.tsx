@@ -1,4 +1,4 @@
-// play-kit/src/geometries/RingGeometry.tsx
+// playxo/src/geometries/RingGeometry.tsx
 
 import React, {
   forwardRef,

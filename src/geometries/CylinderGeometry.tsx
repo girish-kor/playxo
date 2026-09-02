@@ -1,4 +1,4 @@
-// play-kit/src/geometries/CylinderGeometry.tsx
+// playxo/src/geometries/CylinderGeometry.tsx
 
 import React, {
   forwardRef,

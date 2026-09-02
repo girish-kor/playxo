@@ -1,4 +1,4 @@
-// play-kit/src/core/Object3D.tsx
+// playxo/src/core/Object3D.tsx
 
 import React, {
   forwardRef,

@@ -1,4 +1,4 @@
-// play-kit/src/core/SpotLight.tsx
+// playxo/src/core/SpotLight.tsx
 
 import React, {
   forwardRef,

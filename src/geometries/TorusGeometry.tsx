@@ -1,4 +1,4 @@
-// play-kit/src/geometries/TorusGeometry.tsx
+// playxo/src/geometries/TorusGeometry.tsx
 
 import React, {
   forwardRef,

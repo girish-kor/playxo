@@ -1,4 +1,4 @@
-// play-kit/src/core/AmbientLight.tsx
+// playxo/src/core/AmbientLight.tsx
 
 import React, {
   forwardRef,

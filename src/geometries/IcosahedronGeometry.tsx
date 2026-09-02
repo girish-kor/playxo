@@ -1,4 +1,4 @@
-// play-kit/src/geometries/IcosahedronGeometry.tsx
+// playxo/src/geometries/IcosahedronGeometry.tsx
 
 import React, {
   forwardRef,

@@ -1,4 +1,4 @@
-// play-kit/src/core/Light.tsx
+// playxo/src/core/Light.tsx
 
 import React, {
   forwardRef,

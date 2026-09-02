@@ -1,4 +1,4 @@
-// play-kit/src/geometries/PlaneGeometry.tsx
+// playxo/src/geometries/PlaneGeometry.tsx
 
 import React, {
   forwardRef,

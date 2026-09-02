@@ -1,4 +1,4 @@
-// play-kit/src/geometries/CircleGeometry.tsx
+// playxo/src/geometries/CircleGeometry.tsx
 
 import React, {
   forwardRef,

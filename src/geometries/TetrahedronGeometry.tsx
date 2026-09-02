@@ -1,4 +1,4 @@
-// play-kit/src/geometries/TetrahedronGeometry.tsx
+// playxo/src/geometries/TetrahedronGeometry.tsx
 
 import React, {
   forwardRef,

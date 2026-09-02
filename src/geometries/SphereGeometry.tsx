@@ -1,4 +1,4 @@
-// play-kit/src/geometries/SphereGeometry.tsx
+// playxo/src/geometries/SphereGeometry.tsx
 
 import React, {
   forwardRef,

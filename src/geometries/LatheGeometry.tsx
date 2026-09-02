@@ -1,4 +1,4 @@
-// play-kit/src/geometries/LatheGeometry.tsx
+// playxo/src/geometries/LatheGeometry.tsx
 
 import React, {
   forwardRef,

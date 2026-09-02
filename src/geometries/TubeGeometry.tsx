@@ -1,4 +1,4 @@
-// play-kit/src/geometries/TubeGeometry.tsx
+// playxo/src/geometries/TubeGeometry.tsx
 
 import React, {
   forwardRef,
