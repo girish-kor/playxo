@@ -88,7 +88,7 @@ const HemisphereLight = forwardRef<HemisphereLightRef, HemisphereLightProps>(
         ? new THREE.Vector3(...position)
         : position;
       light.position.copy(pos);
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
 
       handleChange(light);
 
@@ -132,7 +132,7 @@ const HemisphereLight = forwardRef<HemisphereLightRef, HemisphereLightProps>(
     useEffect(() => {
       const light = lightRef.current;
       if (!light) return;
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
       handleChange(light);
     }, [enabled, handleChange]);
 

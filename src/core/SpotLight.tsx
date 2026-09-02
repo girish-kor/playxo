@@ -114,7 +114,7 @@ const SpotLight = forwardRef<SpotLightRef, SpotLightProps>(
       light.castShadow = castShadow;
       light.shadow.mapSize.width = shadowMapSize[0];
       light.shadow.mapSize.height = shadowMapSize[1];
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
 
       handleChange(light);
 
@@ -205,7 +205,7 @@ const SpotLight = forwardRef<SpotLightRef, SpotLightProps>(
     useEffect(() => {
       const light = lightRef.current;
       if (!light) return;
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
       handleChange(light);
     }, [enabled, handleChange]);
 

@@ -73,9 +73,9 @@ const Light = forwardRef<LightRef, LightProps>(
       [onUpdate],
     );
 
-    // Create light
+    // Create light - use a concrete light to avoid abstract class error
     useEffect(() => {
-      const light = new THREE.Light();
+      const light = new THREE.DirectionalLight(); // concrete subclass
       lightRef.current = light;
       setIsActive(active);
 
@@ -86,7 +86,7 @@ const Light = forwardRef<LightRef, LightProps>(
         ? new THREE.Vector3(...position)
         : position;
       light.position.copy(pos);
-      light.enabled = enabled;
+      (light as any).enabled = enabled; // type workaround for older @types/three
 
       handleChange(light);
 
@@ -127,7 +127,7 @@ const Light = forwardRef<LightRef, LightProps>(
     useEffect(() => {
       const light = lightRef.current;
       if (!light) return;
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
       handleChange(light);
     }, [enabled, handleChange]);
 

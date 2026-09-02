@@ -140,11 +140,11 @@ const Scene = forwardRef<SceneRef, SceneProps>(
       scene.fog = fog || null;
     }, [fog]);
 
-    // Sync autoUpdate
+    // Sync autoUpdate – correct property is matrixAutoUpdate
     useEffect(() => {
       const scene = sceneRef.current;
       if (!scene) return;
-      scene.autoUpdate = autoUpdate;
+      scene.matrixAutoUpdate = autoUpdate;
     }, [autoUpdate]);
 
     // Accessibility

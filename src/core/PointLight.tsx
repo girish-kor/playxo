@@ -92,7 +92,7 @@ const PointLight = forwardRef<PointLightRef, PointLightProps>(
         ? new THREE.Vector3(...position)
         : position;
       light.position.copy(pos);
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
 
       handleChange(light);
 
@@ -143,7 +143,7 @@ const PointLight = forwardRef<PointLightRef, PointLightProps>(
     useEffect(() => {
       const light = lightRef.current;
       if (!light) return;
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
       handleChange(light);
     }, [enabled, handleChange]);
 

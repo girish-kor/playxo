@@ -89,9 +89,7 @@ const Object3D = forwardRef<Object3DRef, Object3DProps>(
         ? new THREE.Euler(...rotation)
         : rotation;
       object.rotation.copy(rot);
-      const sc = Array.isArray(scale)
-        ? new THREE.Vector3(...scale)
-        : scale;
+      const sc = Array.isArray(scale) ? new THREE.Vector3(...scale) : scale;
       object.scale.copy(sc);
       if (quaternion) {
         const q = Array.isArray(quaternion)
@@ -132,9 +130,7 @@ const Object3D = forwardRef<Object3DRef, Object3DProps>(
     useEffect(() => {
       const object = objectRef.current;
       if (!object) return;
-      const sc = Array.isArray(scale)
-        ? new THREE.Vector3(...scale)
-        : scale;
+      const sc = Array.isArray(scale) ? new THREE.Vector3(...scale) : scale;
       object.scale.copy(sc);
       handleChange(object);
     }, [scale, handleChange]);

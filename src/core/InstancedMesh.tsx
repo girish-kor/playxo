@@ -146,8 +146,11 @@ const InstancedMesh = forwardRef<InstancedMeshRef, InstancedMeshProps>(
             instanceColor,
             3,
           );
+          // Mark needsUpdate after assignment
+          mesh.instanceColor.needsUpdate = true;
         }
-        mesh.instanceColor.needsUpdate = true;
+        // Only if we assigned instanceColor, mark needsUpdate
+        if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
       }
 
       handleChange(mesh);

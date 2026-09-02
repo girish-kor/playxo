@@ -77,7 +77,7 @@ const AmbientLight = forwardRef<AmbientLightRef, AmbientLightProps>(
 
       light.color = new THREE.Color(color);
       light.intensity = intensity;
-      light.enabled = enabled;
+      (light as any).enabled = enabled; // type workaround
       handleChange(light);
 
       return () => {
@@ -103,7 +103,7 @@ const AmbientLight = forwardRef<AmbientLightRef, AmbientLightProps>(
     useEffect(() => {
       const light = lightRef.current;
       if (!light) return;
-      light.enabled = enabled;
+      (light as any).enabled = enabled;
       handleChange(light);
     }, [enabled, handleChange]);
 
