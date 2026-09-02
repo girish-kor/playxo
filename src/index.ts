@@ -33,3 +33,21 @@ export { default as TextGeometry } from "./geometries/TextGeometry";
 export { default as TorusGeometry } from "./geometries/TorusGeometry";
 export { default as TorusKnotGeometry } from "./geometries/TorusKnotGeometry";
 export { default as TubeGeometry } from "./geometries/TubeGeometry";
+
+// Materials
+export { default as LineBasicMaterial } from "./materials/LineBasicMaterial";
+export { default as LineDashedMaterial } from "./materials/LineDashedMaterial";
+export { default as MeshBasicMaterial } from "./materials/MeshBasicMaterial";
+export { default as MeshDepthMaterial } from "./materials/MeshDepthMaterial";
+export { default as MeshLambertMaterial } from "./materials/MeshLambertMaterial";
+export { default as MeshMatcapMaterial } from "./materials/MeshMatcapMaterial";
+export { default as MeshNormalMaterial } from "./materials/MeshNormalMaterial";
+export { default as MeshPhongMaterial } from "./materials/MeshPhongMaterial";
+export { default as MeshPhysicalMaterial } from "./materials/MeshPhysicalMaterial";
+export { default as MeshStandardMaterial } from "./materials/MeshStandardMaterial";
+export { default as MeshToonMaterial } from "./materials/MeshToonMaterial";
+export { default as PointsMaterial } from "./materials/PointsMaterial";
+export { default as RawShaderMaterial } from "./materials/RawShaderMaterial";
+export { default as ShaderMaterial } from "./materials/ShaderMaterial";
+export { default as ShadowMaterial } from "./materials/ShadowMaterial";
+export { default as SpriteMaterial } from "./materials/SpriteMaterial";
