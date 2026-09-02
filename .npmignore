@@ -1,0 +1,12 @@
+src/
+rollup.config.js
+tsconfig.json
+babel.config.json
+.gitignore
+.prettierrc
+.eslintrc.json
+jest.config.js
+coverage/
+node_modules/
+*.log
+.DS_Store

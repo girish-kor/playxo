@@ -1,0 +1,40 @@
+# .github/dependabot.yml
+version: 2
+updates:
+  # Keep npm dependencies up to date
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    versioning-strategy: "auto"
+    allow:
+      - dependency-type: "production"
+      - dependency-type: "development"
+    ignore:
+      # Respect your peerDependency minimums (don't auto-upgrade major Three.js/Fiber without manual testing)
+      - dependency-name: "@react-three/fiber"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "three"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Group dev tooling updates together to reduce PR noise
+      dev-tooling:
+        patterns:
+          - "@typescript-eslint/*"
+          - "eslint*"
+          - "prettier"
+          - "rollup*"
+      three-ecosystem:
+        patterns:
+          - "three"
+          - "@react-three/fiber"
+          - "@types/three"
+
+  # Keep GitHub Actions up to date (uses your Node 16 engine context)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
