@@ -11,7 +11,7 @@ import React, {
 import * as THREE from "three";
 
 export interface CameraProps {
-  /** Field of view (perspective) or frustum size (orthographic) */
+  /** Field of view (for perspective) */
   fov?: number;
   /** Aspect ratio (width/height) */
   aspect?: number;
@@ -19,19 +19,40 @@ export interface CameraProps {
   near?: number;
   /** Far clipping plane */
   far?: number;
-  /** Camera position as [x, y, z] or Vector3 */
+  /** Position as [x, y, z] or Vector3 */
   position?: [number, number, number] | THREE.Vector3;
   /** Target to look at as [x, y, z] or Vector3 */
   lookAt?: [number, number, number] | THREE.Vector3;
-  /** If true, use OrthographicCamera; otherwise PerspectiveCamera */
+  /** Whether to use orthographic projection (overrides variant) */
   orthographic?: boolean;
+  /** Variant of the camera (default: 'perspective') */
+  variant?: "perspective" | "orthographic" | "array";
 
   // Events
+  /** Called whenever camera properties change */
   onChange?: (camera: THREE.Camera) => void;
-  onUpdate?: (camera: THREE.Camera) => void;
+  /** Called each frame while active */
+  onUpdate?: (camera: THREE.Camera, delta: number) => void;
+
+  // State
+  /** Whether the camera is active (enables onUpdate loop) */
+  active?: boolean;
+  /** Accessibility label */
+  "aria-label"?: string;
 }
 
-const Camera = forwardRef<THREE.Camera, CameraProps>(
+export interface CameraRef {
+  /** The underlying Three.js Camera */
+  camera: THREE.Camera | null;
+  /** Whether the camera is active */
+  active: boolean;
+  /** Manually set active state */
+  setActive: (active: boolean) => void;
+  /** Force an update event (triggers onChange) */
+  update: () => void;
+}
+
+const Camera = forwardRef<CameraRef, CameraProps>(
   (
     {
       fov = 75,
@@ -41,16 +62,23 @@ const Camera = forwardRef<THREE.Camera, CameraProps>(
       position = [0, 0, 5],
       lookAt = [0, 0, 0],
       orthographic = false,
+      variant = "perspective",
       onChange,
       onUpdate,
+      active = true,
+      "aria-label": ariaLabel,
     },
     ref,
   ) => {
-    const [active, setActive] = useState<boolean>(true);
+    // Internal states
+    const [isActive, setIsActive] = useState<boolean>(active);
+
+    // Refs
     const cameraRef = useRef<THREE.Camera | null>(null);
     const animFrameRef = useRef<number | null>(null);
+    const prevTimeRef = useRef<number>(performance.now());
 
-    // Stabilize onChange handler
+    // Stabilize callbacks
     const handleChange = useCallback(
       (camera: THREE.Camera) => {
         if (onChange) onChange(camera);
@@ -58,14 +86,33 @@ const Camera = forwardRef<THREE.Camera, CameraProps>(
       [onChange],
     );
 
-    // Create camera instance when orthographic mode changes
+    const handleUpdate = useCallback(
+      (camera: THREE.Camera, delta: number) => {
+        if (onUpdate) onUpdate(camera, delta);
+      },
+      [onUpdate],
+    );
+
+    // Create the camera instance when variant or orthographic changes
     useEffect(() => {
-      let cam: THREE.Camera;
-      if (orthographic) {
-        // Compute frustum size from fov (treat as vertical FOV) and near plane
-        const halfHeight = Math.tan((fov * Math.PI) / 360) * near;
+      let camera: THREE.Camera;
+
+      // Determine actual variant: orthographic bool overrides variant
+      const useOrthographic = orthographic || variant === "orthographic";
+      const useArray = variant === "array";
+
+      if (useArray) {
+        // Create an ArrayCamera with a single default camera
+        const subCam = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        camera = new THREE.ArrayCamera([subCam]);
+        // Copy properties to the ArrayCamera itself (it inherits from PerspectiveCamera)
+        // We'll set its properties manually below.
+      } else if (useOrthographic) {
+        // OrthographicCamera(left, right, top, bottom, near, far)
+        // Use reasonable defaults based on aspect
+        const halfHeight = 1; // arbitrary
         const halfWidth = halfHeight * aspect;
-        cam = new THREE.OrthographicCamera(
+        camera = new THREE.OrthographicCamera(
           -halfWidth,
           halfWidth,
           halfHeight,
@@ -74,76 +121,144 @@ const Camera = forwardRef<THREE.Camera, CameraProps>(
           far,
         );
       } else {
-        cam = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
       }
 
-      cameraRef.current = cam;
-      setActive(true);
-      handleChange(cam);
-
-      return () => {
-        // No explicit disposal needed, but cleanup ref
-        cameraRef.current = null;
-      };
-      // Only recreate when orthographic toggles; other props updated via separate effects
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [orthographic]); // we intentionally omit fov, aspect, etc. because they are handled by update effects
-
-    // Update camera properties when props change (except position/lookAt)
-    useEffect(() => {
-      const cam = cameraRef.current;
-      if (!cam) return;
-
-      if (!orthographic && cam instanceof THREE.PerspectiveCamera) {
-        cam.fov = fov;
-        cam.aspect = aspect;
-        cam.near = near;
-        cam.far = far;
-        cam.updateProjectionMatrix();
-        handleChange(cam);
-      } else if (orthographic && cam instanceof THREE.OrthographicCamera) {
-        const halfHeight = Math.tan((fov * Math.PI) / 360) * near;
-        const halfWidth = halfHeight * aspect;
-        cam.left = -halfWidth;
-        cam.right = halfWidth;
-        cam.top = halfHeight;
-        cam.bottom = -halfHeight;
-        cam.near = near;
-        cam.far = far;
-        cam.updateProjectionMatrix();
-        handleChange(cam);
-      }
-    }, [fov, aspect, near, far, orthographic, handleChange]);
-
-    // Update position and lookAt
-    useEffect(() => {
-      const cam = cameraRef.current;
-      if (!cam) return;
-
+      // Apply initial transforms
       const pos = Array.isArray(position)
         ? new THREE.Vector3(...position)
         : position;
-      cam.position.copy(pos);
+      camera.position.copy(pos);
 
+      // Apply lookAt
       const target = Array.isArray(lookAt)
         ? new THREE.Vector3(...lookAt)
         : lookAt;
-      cam.lookAt(target);
+      camera.lookAt(target);
 
-      handleChange(cam);
-    }, [position, lookAt, handleChange]);
+      // Update projection matrix for perspective/orthographic cameras
+      if (
+        camera instanceof THREE.PerspectiveCamera ||
+        camera instanceof THREE.OrthographicCamera
+      ) {
+        if (camera instanceof THREE.PerspectiveCamera) {
+          camera.fov = fov;
+          camera.aspect = aspect;
+        } else {
+          const halfHeight = 1;
+          const halfWidth = halfHeight * aspect;
+          camera.left = -halfWidth;
+          camera.right = halfWidth;
+          camera.top = halfHeight;
+          camera.bottom = -halfHeight;
+        }
+        camera.updateProjectionMatrix();
+      }
+
+      cameraRef.current = camera;
+
+      // Reset active state to prop
+      setIsActive(active);
+
+      // Call onChange initially
+      handleChange(camera);
+
+      return () => {
+        cameraRef.current = null;
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [variant, orthographic]); // recreate only when variant/orthographic changes
+
+    // Update properties when they change (without recreating camera)
+    useEffect(() => {
+      const camera = cameraRef.current;
+      if (!camera) return;
+
+      if (
+        camera instanceof THREE.PerspectiveCamera ||
+        camera instanceof THREE.OrthographicCamera
+      ) {
+        if (camera instanceof THREE.PerspectiveCamera) {
+          camera.fov = fov;
+          camera.aspect = aspect;
+        } else {
+          const halfHeight = 1;
+          const halfWidth = halfHeight * aspect;
+          camera.left = -halfWidth;
+          camera.right = halfWidth;
+          camera.top = halfHeight;
+          camera.bottom = -halfHeight;
+        }
+        camera.updateProjectionMatrix();
+        handleChange(camera);
+      }
+    }, [fov, aspect, handleChange]);
+
+    // Update position
+    useEffect(() => {
+      const camera = cameraRef.current;
+      if (!camera) return;
+      const pos = Array.isArray(position)
+        ? new THREE.Vector3(...position)
+        : position;
+      camera.position.copy(pos);
+      handleChange(camera);
+    }, [position, handleChange]);
+
+    // Update lookAt
+    useEffect(() => {
+      const camera = cameraRef.current;
+      if (!camera) return;
+      const target = Array.isArray(lookAt)
+        ? new THREE.Vector3(...lookAt)
+        : lookAt;
+      camera.lookAt(target);
+      handleChange(camera);
+    }, [lookAt, handleChange]);
+
+    // Update near/far (for both perspective and orthographic)
+    useEffect(() => {
+      const camera = cameraRef.current;
+      if (!camera) return;
+      // Both PerspectiveCamera and OrthographicCamera have near/far
+      if (
+        camera instanceof THREE.PerspectiveCamera ||
+        camera instanceof THREE.OrthographicCamera
+      ) {
+        camera.near = near;
+        camera.far = far;
+        camera.updateProjectionMatrix();
+        handleChange(camera);
+      }
+    }, [near, far, handleChange]);
+
+    // Accessibility: set userData for aria-label
+    useEffect(() => {
+      const camera = cameraRef.current;
+      if (!camera) return;
+      camera.userData["aria-label"] = ariaLabel || "";
+    }, [ariaLabel]);
+
+    // Active state sync
+    useEffect(() => {
+      setIsActive(active);
+    }, [active]);
 
     // Animation loop for onUpdate
     useEffect(() => {
-      if (!onUpdate) return;
+      if (!onUpdate || !isActive) return;
 
-      const loop = () => {
-        if (cameraRef.current) {
-          onUpdate(cameraRef.current);
+      const loop = (time: number) => {
+        const camera = cameraRef.current;
+        if (camera) {
+          const delta = time - prevTimeRef.current;
+          prevTimeRef.current = time;
+          handleUpdate(camera, delta);
         }
         animFrameRef.current = requestAnimationFrame(loop);
       };
 
+      prevTimeRef.current = performance.now();
       animFrameRef.current = requestAnimationFrame(loop);
 
       return () => {
@@ -152,10 +267,34 @@ const Camera = forwardRef<THREE.Camera, CameraProps>(
           animFrameRef.current = null;
         }
       };
-    }, [onUpdate]);
+    }, [onUpdate, isActive, handleUpdate]);
 
-    useImperativeHandle(ref, () => cameraRef.current as THREE.Camera);
+    // Expose imperative methods and state via ref
+    useImperativeHandle(
+      ref,
+      () => ({
+        camera: cameraRef.current,
+        active: isActive,
+        setActive: (active: boolean) => {
+          setIsActive(active);
+        },
+        update: () => {
+          const camera = cameraRef.current;
+          if (camera) {
+            if (
+              camera instanceof THREE.PerspectiveCamera ||
+              camera instanceof THREE.OrthographicCamera
+            ) {
+              camera.updateProjectionMatrix();
+            }
+            handleChange(camera);
+          }
+        },
+      }),
+      [isActive, handleChange],
+    );
 
+    // This component renders nothing; the camera is managed via refs.
     return null;
   },
 );
